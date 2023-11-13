@@ -1,6 +1,5 @@
 import pygame
-import sys
-
+from maze import MazeSolver, initialize_maze, print_maze
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -10,7 +9,6 @@ RED = (255, 0, 0)
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
 CELL_SIZE = 40
-
 
 maze = [
     ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1'],
@@ -25,7 +23,6 @@ maze = [
     ['1', '1', '1', '1', '1', '1', '1', '1', 'm', '1']
 ]
 
-  
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Labirinto")
@@ -45,6 +42,26 @@ def draw_maze():
 def main():
     running = True
 
+    file_path = "maze.py" 
+    maze = initialize_maze(file_path)
+
+    print("Labirinto Inicial:")
+    print_maze(maze)
+
+    solver = MazeSolver(maze)
+    start_row, start_col = 1, maze[0].index('e')
+    solver.solve_maze(start_row, start_col)
+    solver.mark_visited_cells()
+
+    print("\nLabirinto após percorrer:")
+    print_maze(maze)
+
+    exit_row, exit_col = 9, maze[9].index('m')
+    solver.exit_maze(start_row, start_col, exit_row, exit_col)
+
+    print("\nLabirinto após encontrar a saída:")
+    print_maze(maze)
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -58,5 +75,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-    
